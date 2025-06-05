@@ -14,16 +14,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log('[AuthContext] Auth state changed:', user);
       setCurrentUser(user);
       setLoading(false);
-      console.log('[AuthContext] Auth loading set to false');
     });
     return unsubscribe;
   }, []);
 
   useEffect(() => {
-    console.log('[AuthContext] currentUser:', currentUser, 'loading:', loading);
+
   }, [currentUser, loading]);
 
   const logout = async () => {

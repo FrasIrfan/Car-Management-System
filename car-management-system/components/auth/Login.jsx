@@ -21,8 +21,8 @@ export default function Login() {
     
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-      console.log('Login successful:', result.user);
-      // Fetch user role from Firestore
+
+
       const userDoc = await getDoc(doc(db, 'users', result.user.uid));
       const userData = userDoc.data();
       if (userData && userData.role === 'admin') {
@@ -32,11 +32,11 @@ export default function Login() {
       } else {
         router.push('/purchaser');
       }
-      console.log('Redirecting based on role:', userData?.role);
+
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
-      console.log('Login failed:', err);
+
     }
   };
 
@@ -44,8 +44,8 @@ export default function Login() {
     try {
       setIsLoading(true);
       const result = await signInWithGoogle();
-      console.log('Google login successful:', result);
-      // Fetch user role from Firestore
+
+
       const userDoc = await getDoc(doc(db, 'users', result.uid));
       const userData = userDoc.data();
       if (userData && userData.role === 'admin') {
@@ -55,11 +55,11 @@ export default function Login() {
       } else {
         router.push('/purchaser');
       }
-      console.log('Redirecting based on role:', userData?.role);
+
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
-      console.log('Google login failed:', err);
+
     }
   };
 

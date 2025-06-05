@@ -12,12 +12,10 @@ export default function RenterChatsPage() {
   const [posts, setPosts] = useState({});
   const messagesEndRef = useRef(null);
 
-  // Fetch all chats where the current user is the owner (renter) of the post
   useEffect(() => {
     if (!currentUser) return;
     let unsub;
     const fetchChats = async () => {
-      // First, get all posts owned by this renter
       const postsSnapshot = await getDocs(query(collection(db, 'posts'), where('ownerId', '==', currentUser.uid)));
       const postMap = {};
       const postIds = [];
@@ -30,7 +28,6 @@ export default function RenterChatsPage() {
         setChats([]);
         return;
       }
-      // Now, get all chats for these posts
       const chatsSnapshot = await getDocs(query(collection(db, 'chats'), where('postId', 'in', postIds)));
       setChats(chatsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     };
@@ -38,12 +35,9 @@ export default function RenterChatsPage() {
     return () => unsub && unsub();
   }, [currentUser]);
 
-  // Listen to messages for the selected chat
   useEffect(() => {
     if (!selectedChat) return;
-    console.log('[RenterChats] Selected chat:', selectedChat);
     const unsub = onSnapshot(doc(db, 'chats', selectedChat.id), (docSnap) => {
-      console.log('[RenterChats] Messages updated:', docSnap.data()?.messages);
       setMessages(docSnap.data()?.messages || []);
     });
     return () => unsub();
@@ -70,7 +64,6 @@ export default function RenterChatsPage() {
             chats.map(chat => (
               <div key={chat.id} style={{ marginBottom: 12, cursor: 'pointer', background: selectedChat?.id === chat.id ? '#e0e7ff' : '#f9fafb', borderRadius: 8, padding: 12, border: '1px solid #eee' }}
                 onClick={() => {
-                  console.log('[RenterChats] Chat clicked:', chat);
                   setSelectedChat(chat);
                 }}>
                 <div style={{ fontWeight: 600, color: '#222' }}>Post: {posts[chat.postId]?.title || chat.postId}</div>

@@ -1,40 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# FleetFras - Car Management System
 
-## Getting Started
+## Overview
+FleetFras is a modern car management system built with Next.js and Firebase, designed to support multiple user roles: Admin, Renter, and Purchaser. The system facilitates car rentals, purchases, and management with a user-friendly interface and robust features.
 
-First, run the development server:
+## Features
+- **User Authentication**: Secure login and signup with email/password and Google authentication.
+- **Role-Based Access**: Different dashboards and functionalities for Admin, Renter, and Purchaser roles.
+- **Post Management**: Renters can create posts for car listings, which require admin approval before being visible to purchasers.
+- **Chat Support**: Real-time chat functionality for users to communicate with admins and other users.
+- **Role Switching**: Purchasers can request to become Renters, with admin approval.
+- **UI Consistency**: Modern and consistent UI across all pages, with a global top navbar for navigation.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Project Structure
+- **`src/pages/`**: Contains all the pages of the application, including dashboards, login, signup, and role-specific pages.
+- **`components/`**: Reusable components like authentication forms, dashboard layouts, and protected routes.
+- **`context/`**: React context for managing authentication state.
+- **`lib/`**: Firebase configuration and helper functions.
+- **`styles/`**: Global and component-specific styles.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup Instructions
+1. **Clone the Repository**:
+   ```bash
+   git clone <repository-url>
+   cd car-management-system
+   ```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+3. **Environment Variables**:
+   - Create a `.env` file in the root directory with the following Firebase credentials:
+     ```env
+     NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+     NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+     NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+     NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+     ```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+4. **Run the Development Server**:
+   ```bash
+   npm run dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+5. **Build for Production**:
+   ```bash
+   npm run build
+   npm start
+   ```
 
-## Learn More
+## Usage Flow
+- **Login/Signup**: Users can log in or sign up using email/password or Google authentication.
+- **Dashboard**: After logging in, users are redirected to their respective dashboards based on their role.
+- **Admin Dashboard**: Admins can manage users, approve/reject posts, and handle role switch requests.
+- **Renter Dashboard**: Renters can create posts, manage their listings, and communicate with purchasers.
+- **Purchaser Dashboard**: Purchasers can view approved posts, initiate chats with renters, and request role switches.
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## License
+This project is licensed under the MIT License.

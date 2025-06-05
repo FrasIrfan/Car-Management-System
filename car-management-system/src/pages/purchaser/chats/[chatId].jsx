@@ -20,7 +20,7 @@ export default function PurchaserChatWithRenterPage() {
       const chatData = docSnap.data();
       setChat(chatData);
       setMessages(chatData?.messages || []);
-      // Fetch post info if not already loaded
+
       if (chatData?.postId && !post) {
         const postSnap = await getDoc(doc(db, 'posts', chatData.postId));
         setPost(postSnap.exists() ? { id: postSnap.id, ...postSnap.data() } : null);

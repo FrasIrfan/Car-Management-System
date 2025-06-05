@@ -52,10 +52,9 @@ export default function Signup() {
         createdAt: new Date().toISOString(),
       });
       
-      router.push('/dashboard');
+      router.push('/login');
     } catch (err) {
       setError(err.message || 'Failed to create account. Please try again.');
-      console.error('Signup error:', err);
     } finally {
       setIsLoading(false);
     }

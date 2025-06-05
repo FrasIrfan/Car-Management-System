@@ -9,7 +9,6 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
   useEffect(() => {
     if (loading) return;
     if (!currentUser) {
-      console.log('[ProtectedRoute] No user, redirecting to /login');
       router.replace('/login');
       return;
     }
@@ -19,7 +18,6 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
       // You may need to fetch from Firestore if not present
       // Example: if (currentUser.role !== 'admin')
       // For now, just log
-      console.log('[ProtectedRoute] Admin only route, user:', currentUser);
       // TODO: Implement actual admin check
     }
   }, [currentUser, loading, adminOnly, router]);

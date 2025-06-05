@@ -26,7 +26,7 @@ export default function PurchaserDashboardPage() {
       } else {
         setRequestStatus(null);
       }
-      // Fetch user role
+
       const userDoc = await getDocs(query(collection(db, 'users'), where('email', '==', currentUser.email)));
       if (!userDoc.empty) {
         setUserRole(userDoc.docs[0].data().role);
@@ -46,10 +46,10 @@ export default function PurchaserDashboardPage() {
         createdAt: new Date().toISOString(),
       });
       setRequestStatus('pending');
-      console.log('[PurchaserDashboard] Role switch request submitted');
+
     } catch (err) {
       alert('Failed to submit request');
-      console.error('[PurchaserDashboard] Error submitting role switch request:', err);
+
     }
   };
 
@@ -59,7 +59,6 @@ export default function PurchaserDashboardPage() {
     router.push('/renter');
   };
 
-  console.log('[PurchaserDashboard] currentUser:', currentUser, 'requestStatus:', requestStatus);
 
   return (
     <div style={{ padding: '2rem', minHeight: '100vh', background: '#f3f4f6' }}>

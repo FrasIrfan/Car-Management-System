@@ -21,7 +21,7 @@ export default function AdminChatsPage() {
     const unsub = onSnapshot(collection(db, 'chats'), async (snapshot) => {
       const chatList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setChats(chatList);
-      // Fetch user info for all unique userIds in chats
+
       const userIds = [...new Set(chatList.map(chat => chat.userId).filter(Boolean))];
       if (userIds.length > 0) {
         const usersSnapshot = await getDocs(collection(db, 'users'));
@@ -80,7 +80,7 @@ export default function AdminChatsPage() {
           {selectedChat ? (
             <>
               <h3 style={{ color: '#4f46e5', marginBottom: 8 }}>Chat with {selectedChat.userRole} ({selectedChat.userId})</h3>
-              <div style={{ flex: 1, overflowY: 'auto', marginBottom: 16, background: '#f9fafb', borderRadius: 8, padding: 12, border: '1px solid #eee', minHeight: 300 }}>
+              <div style={{ flex: 1, overflowY: 'auto', marginBottom: 16, background: '#f9fafb', borderRadius: 8, padding: 12, border: '1px solid #eee' }}>
                 {messages.length === 0 ? <p style={{ color: '#888' }}>No messages yet.</p> :
                   messages.map((msg, idx) => (
                     <div key={idx} style={{ marginBottom: 10, textAlign: msg.sender === 'admin' ? 'right' : 'left' }}>

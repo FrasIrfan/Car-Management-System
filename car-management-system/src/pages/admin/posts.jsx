@@ -43,8 +43,6 @@ export default function AdminPostsPage() {
     router.push('/login');
   };
 
-  console.log('[AdminPosts] currentUser:', currentUser);
-
   return (
     <div style={{ padding: '2rem', minHeight: '100vh', background: '#f3f4f6' }}>
       <div style={{ maxWidth: 1100, margin: '2rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(0,0,0,0.10)', padding: '2rem', color: '#222' }}>

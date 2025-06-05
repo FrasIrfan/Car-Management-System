@@ -21,12 +21,12 @@ export default function PurchaserPostsPage() {
       const q = query(collection(db, 'posts'), where('status', '==', 'approved'));
       const snapshot = await getDocs(q);
       let allPosts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      // Filter out posts where the current user is the owner
+
       if (currentUser) {
         allPosts = allPosts.filter(post => post.ownerId !== currentUser.uid);
       }
       setPosts(allPosts);
-      // Fetch owner info for each post
+
       const ownerIds = [...new Set(allPosts.map(post => post.ownerId))];
       const usersSnapshot = await getDocs(collection(db, 'users'));
       const userMap = {};
@@ -40,8 +40,6 @@ export default function PurchaserPostsPage() {
     fetchPosts();
   }, [currentUser]);
 
-  console.log('[PurchaserPosts] currentUser:', currentUser);
-
   const handleLogout = async () => {
     await logout();
     router.push('/login');
@@ -49,15 +47,7 @@ export default function PurchaserPostsPage() {
 
   const handleChatWithRenter = async (post) => {
     if (!currentUser) return;
-    console.log('[handleChatWithRenter] post:', post);
-    console.log('[handleChatWithRenter] post.ownerId:', post.ownerId);
-    console.log('[handleChatWithRenter] post.id:', post.id);
-    console.log('[handleChatWithRenter] currentUser.uid:', currentUser.uid);
-    if (!post.ownerId || !post.id || !currentUser.uid) {
-      console.error('[handleChatWithRenter] Missing required field:', { postOwnerId: post.ownerId, postId: post.id, userId: currentUser.uid });
-      return;
-    }
-    // Check if chat already exists between purchaser and this renter for this post
+
     const q = query(
       collection(db, 'chats'),
       where('userId', '==', currentUser.uid),
@@ -69,7 +59,6 @@ export default function PurchaserPostsPage() {
     if (!snapshot.empty) {
       chatId = snapshot.docs[0].id;
     } else {
-      // Create new chat
       const newChat = await addDoc(collection(db, 'chats'), {
         userId: currentUser.uid,
         renterId: post.ownerId,
@@ -82,7 +71,6 @@ export default function PurchaserPostsPage() {
     router.push(`/purchaser/chats/${chatId}`);
   };
 
-  // Filter posts by price range before pagination
   const filteredPosts = posts.filter(post => {
     const price = Number(post.price);
     const min = minPrice !== '' ? Number(minPrice) : -Infinity;

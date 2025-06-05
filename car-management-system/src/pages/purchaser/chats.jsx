@@ -23,7 +23,6 @@ export default function PurchaserChatPage() {
           setMessages(docSnap.data()?.messages || []);
         });
       } else {
-        // Create a new chat document
         const newChat = await addDoc(collection(db, 'chats'), {
           userId: currentUser.uid,
           userRole: 'purchaser',

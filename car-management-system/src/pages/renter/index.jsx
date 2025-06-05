@@ -13,8 +13,6 @@ export default function RenterDashboardPage() {
     router.push('/purchaser');
   };
 
-  console.log('[RenterDashboard] currentUser:', currentUser);
-
   return (
     <div style={{ padding: '2rem', minHeight: '100vh', background: '#f3f4f6' }}>
       <div style={{ maxWidth: 600, margin: '2rem auto' }}>
