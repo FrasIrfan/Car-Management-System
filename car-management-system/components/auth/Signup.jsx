@@ -5,7 +5,6 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import '../../styles/auth.css';
 
 export default function Signup() {
   const [formData, setFormData] = useState({

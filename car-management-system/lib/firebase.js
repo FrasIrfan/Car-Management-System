@@ -7,13 +7,12 @@ import {
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-
-  apiKey: "AIzaSyDsXS1vhUGDVZVaFR_XKpdhzQAzLTyV6kg",
-  authDomain: "car-management-system-d6ff2.firebaseapp.com",
-  projectId: "car-management-system-d6ff2",
-  storageBucket: "car-management-system-d6ff2.firebasestorage.app",
-  messagingSenderId: "07165218280",
-  appId: "1:707165218280:web:7e719544c58d5b49f1f05d"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);

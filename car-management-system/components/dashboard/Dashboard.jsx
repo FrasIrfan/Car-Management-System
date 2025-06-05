@@ -22,8 +22,22 @@ export default function Dashboard() {
     const fetchUserData = async () => {
       try {
         const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-        setUserData(userDoc.data());
-        console.log('[Dashboard] Fetched userData:', userDoc.data());
+        const data = userDoc.data();
+        setUserData(data);
+        console.log('[Dashboard] Fetched userData:', data);
+        // Role-based redirect
+        if (data && data.role) {
+          if (data.role === 'admin') {
+            router.replace('/admin');
+            return;
+          } else if (data.role === 'renter') {
+            router.replace('/renter');
+            return;
+          } else if (data.role === 'purchaser') {
+            router.replace('/purchaser');
+            return;
+          }
+        }
       } catch (error) {
         console.error('[Dashboard] Error fetching user data:', error);
       } finally {

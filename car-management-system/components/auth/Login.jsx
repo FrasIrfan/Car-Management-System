@@ -4,7 +4,8 @@ import { auth, signInWithGoogle } from '../../lib/firebase';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import '../../styles/auth.css';
+import { db } from '../../lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -21,8 +22,17 @@ export default function Login() {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       console.log('Login successful:', result.user);
-      router.push('/dashboard');
-      console.log('Redirecting to /dashboard');
+      // Fetch user role from Firestore
+      const userDoc = await getDoc(doc(db, 'users', result.user.uid));
+      const userData = userDoc.data();
+      if (userData && userData.role === 'admin') {
+        router.push('/admin');
+      } else if (userData && userData.role === 'renter') {
+        router.push('/renter');
+      } else {
+        router.push('/purchaser');
+      }
+      console.log('Redirecting based on role:', userData?.role);
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -35,8 +45,17 @@ export default function Login() {
       setIsLoading(true);
       const result = await signInWithGoogle();
       console.log('Google login successful:', result);
-      router.push('/dashboard');
-      console.log('Redirecting to /dashboard');
+      // Fetch user role from Firestore
+      const userDoc = await getDoc(doc(db, 'users', result.uid));
+      const userData = userDoc.data();
+      if (userData && userData.role === 'admin') {
+        router.push('/admin');
+      } else if (userData && userData.role === 'renter') {
+        router.push('/renter');
+      } else {
+        router.push('/purchaser');
+      }
+      console.log('Redirecting based on role:', userData?.role);
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -47,11 +66,12 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Login - Car Management System</title>
+        <title>Login - FleetFras</title>
       </Head>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="auth-form-container max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden auth-card">
           <div className="auth-gradient-bg px-6 py-8">
+        
             <h2 className="text-center text-3xl font-extrabold text-white">
               Welcome Back
             </h2>
