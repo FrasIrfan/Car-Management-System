@@ -40,18 +40,6 @@ export default function CreatePostPage() {
     <div style={{ padding: '2rem', minHeight: '100vh', background: '#f3f4f6' }}>
       <div style={{ maxWidth: 500, margin: '2rem auto' }}>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginBottom: '1.5rem' }}>
-          <button
-            style={{ padding: '0.5rem 1.2rem', background: '#fff', color: '#4f46e5', border: '1px solid #4f46e5', borderRadius: 6, fontWeight: 500, cursor: 'pointer' }}
-            onClick={() => router.push('/')}
-          >
-            Home
-          </button>
-          <button
-            style={{ padding: '0.5rem 1.2rem', background: '#dc2626', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 500, cursor: 'pointer' }}
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
         </div>
         <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(0,0,0,0.10)', padding: '2rem', color: '#222' }}>
           <h1 style={{ marginBottom: '1.5rem', color: '#222' }}>Create New Post</h1>

@@ -3,6 +3,32 @@ import { useRouter } from 'next/router';
 import { db } from '../../../lib/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 
+export async function getServerSideProps(context) {
+  let nookies = require('nookies');
+  if (nookies.default) nookies = nookies.default;
+  const admin = require('../../../lib/admin');
+  try {
+    const cookies = nookies.get(context);
+    const session = cookies.session || '';
+    if (!session) {
+      return { redirect: { destination: '/login', permanent: false } };
+    }
+    const decoded = await admin.getAuth().verifySessionCookie(session, true);
+    const db = admin.getFirestore();
+    const userDoc = await db.collection('users').doc(decoded.uid).get();
+    const userData = userDoc.data();
+    // Debug logging
+    console.log('SSR: UID:', decoded.uid, 'userData:', userData);
+    if (!userData || !userData.role || userData.role.toLowerCase() !== 'renter') {
+      return { redirect: { destination: '/login', permanent: false } };
+    }
+    return { props: {} };
+  } catch (err) {
+    console.error('SSR error:', err);
+    return { redirect: { destination: '/login', permanent: false } };
+  }
+}
+
 export default function RenterDashboardPage() {
   const { currentUser } = useAuth();
   const router = useRouter();

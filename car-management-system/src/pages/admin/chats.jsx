@@ -19,7 +19,16 @@ export default function AdminChatsPage() {
   useEffect(() => {
     if (!mounted) return;
     const unsub = onSnapshot(collection(db, 'chats'), async (snapshot) => {
-      const chatList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      let chatList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      chatList.sort((a, b) => {
+        const aTime = (a.messages && a.messages.length > 0)
+          ? a.messages[a.messages.length - 1].timestamp
+          : (a.createdAt ? new Date(a.createdAt).getTime() : 0);
+        const bTime = (b.messages && b.messages.length > 0)
+          ? b.messages[b.messages.length - 1].timestamp
+          : (b.createdAt ? new Date(b.createdAt).getTime() : 0);
+        return bTime - aTime;
+      });
       setChats(chatList);
 
       const userIds = [...new Set(chatList.map(chat => chat.userId).filter(Boolean))];

@@ -11,7 +11,9 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "firebase": "^11.8.1",
+    "firebase-admin": "^13.4.0",
     "next": "15.3.3",
+    "nookies": "^2.5.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0"

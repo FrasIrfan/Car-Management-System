@@ -18,48 +18,49 @@ export default function Login() {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-
-
-      const userDoc = await getDoc(doc(db, 'users', result.user.uid));
-      const userData = userDoc.data();
-      if (userData && userData.role === 'admin') {
-        router.push('/admin');
-      } else if (userData && userData.role === 'renter') {
-        router.push('/renter');
-      } else {
-        router.push('/purchaser');
-      }
-
+      const user = result.user;
+      console.log('[Login] Firebase Auth user:', user);
+      // Get ID token
+      const idToken = await user.getIdToken();
+      console.log('[Login] Got ID token:', idToken);
+      // Call sessionLogin API
+      const apiRes = await fetch('/api/sessionLogin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+      console.log('[Login] sessionLogin API response:', apiRes.status);
+      // Reload the page or redirect to home (server will handle role-based redirect)
+      window.location.href = '/';
     } catch (err) {
+      console.error('[Login] Error:', err);
       setError(err.message);
       setIsLoading(false);
-
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
-      const result = await signInWithGoogle();
-
-
-      const userDoc = await getDoc(doc(db, 'users', result.uid));
-      const userData = userDoc.data();
-      if (userData && userData.role === 'admin') {
-        router.push('/admin');
-      } else if (userData && userData.role === 'renter') {
-        router.push('/renter');
-      } else {
-        router.push('/purchaser');
-      }
-
+      const user = await signInWithGoogle();
+      console.log('[Login] Google Auth user:', user);
+      // Get ID token
+      const idToken = await user.getIdToken();
+      console.log('[Login] Got Google ID token:', idToken);
+      // Call sessionLogin API
+      const apiRes = await fetch('/api/sessionLogin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+      console.log('[Login] sessionLogin API response:', apiRes.status);
+      window.location.href = '/';
     } catch (err) {
+      console.error('[Login] Google Error:', err);
       setError(err.message);
       setIsLoading(false);
-
     }
   };
 

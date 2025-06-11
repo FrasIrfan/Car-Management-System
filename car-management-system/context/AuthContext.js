@@ -16,6 +16,7 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
+      console.log('[AuthContext] onAuthStateChanged user:', user);
     });
     return unsubscribe;
   }, []);
@@ -25,7 +26,11 @@ export function AuthProvider({ children }) {
   }, [currentUser, loading]);
 
   const logout = async () => {
+    // Call API to clear session cookie
+    console.log('[AuthContext] Logging out...');
+    await fetch('/api/sessionLogout', { method: 'POST' });
     await signOut(auth);
+    console.log('[AuthContext] Signed out from Firebase Auth');
   };
 
   const value = {
