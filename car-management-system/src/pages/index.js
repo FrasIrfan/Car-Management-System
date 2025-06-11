@@ -4,6 +4,36 @@ import { useAuth } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
+export async function getServerSideProps(context) {
+  let nookies = require('nookies');
+  if (nookies.default) nookies = nookies.default;
+  const admin = require('../../lib/admin');
+  try {
+    const cookies = nookies.get(context);
+    const session = cookies.session || '';
+    if (!session) {
+      return { redirect: { destination: '/login', permanent: false } };
+    }
+    const decoded = await admin.getAuth().verifySessionCookie(session, true);
+    const db = admin.getFirestore();
+    const userDoc = await db.collection('users').doc(decoded.uid).get();
+    const userData = userDoc.data();
+    if (userData && userData.role) {
+      if (userData.role.toLowerCase() === 'admin') {
+        return { redirect: { destination: '/admin', permanent: false } };
+      } else if (userData.role.toLowerCase() === 'renter') {
+        return { redirect: { destination: '/renter', permanent: false } };
+      } else {
+        return { redirect: { destination: '/purchaser', permanent: false } };
+      }
+    } else {
+      return { redirect: { destination: '/purchaser', permanent: false } };
+    }
+  } catch (err) {
+    return { redirect: { destination: '/login', permanent: false } };
+  }
+}
+
 export default function Home() {
   const { currentUser, loading } = useAuth();
   const router = useRouter();
